@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "5592c1d3-5e39-447c-8ab7-7911467f6930",
+		"name": "StarWarsAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LukeSkywalkerTest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0c97f43-5b16-47a8-9cea-b33f7c288dff",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"",
+							"var schema = {",
+							"    \"type\" : \"object\", ",
+							"    \"required\" : [\"name\", \"height\", \"gender\", \"films\", \"starships\", \"vehicles\"], //обязательные поля",
+							"    \"properties\" :  { // описание   полей",
+							"        \"name\" : {\"type\":\"string\"},",
+							"        \"height\" : {\"type\":\"string\"},",
+							"        \"gender\" : {\"type\":\"string\"},",
+							"        \"films\" : {",
+							"            \"type\":\"array\",",
+							"            \"items\" : {\"type\": \"string\"},",
+							"        },",
+							"        \"starships\" : {",
+							"            \"type\":\"array\",",
+							"            \"items\" : {\"type\": \"string\"}",
+							"        },",
+							"        \"vehicles\" : {",
+							"            \"type\" : \"array\",",
+							"            \"items\" : {\"type\": \"string\"}",
+							"        }",
+							"    }",
+							"};",
+							"//проверка соответствия ответа описаной схема",
+							"pm.test(\"Body is correct\", function(){",
+							"    pm.expect(tv4.validate(data, schema)).to.be.true;",
+							"});",
+							"//проверка статуса",
+							"pm.test(\"Status code is 200\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"//проверка времени ответа",
+							"pm.test(\"Response time is less than 900msec\", function(){",
+							"    pm.expect(pm.response.responseTime).to.be.below(900);",
+							"});",
+							"//тело ответа содержит строки",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Luke Skywalker\", \"gender\", \"male\");",
+							"});",
+							"// статус имеет текст\"ОК\"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"//хэдер содержит контент тайп",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"//контент тайп = эпликейшн джейсон",
+							"pm.test(\"Content type is application/json\", function(){",
+							"    pm.response.to.have.header(\"Content-type\", \"application/json\")",
+							"});",
+							"// что коннекшн = кип элайв",
+							"pm.test(\"Connection is keep-alive\", function(){",
+							"    pm.response.to.have.header(\"Connection\", \"keep-alive\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://swapi.co/api/people/1",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"co"
+					],
+					"path": [
+						"api",
+						"people",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SW Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b19d665b-9c73-4264-b6c1-5e4847bda2bb",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"",
+							"var schema = {",
+							"    \"type\" : \"object\",",
+							"    \"required\" : [\"people\", \"planets\", \"films\", \"species\", \"vehicles\", \"starships\"],",
+							"    \"properties\" : {",
+							"        \"planets\" : {\"type\" : \"string\"},",
+							"        \"people\" : {\"type\" : \"string\"},",
+							"        \"films\" : {\"type\" : \"string\"},",
+							"        \"species\" : {\"type\" : \"string\"},",
+							"        \"vehicles\" : {\"type\" : \"string\"},",
+							"        \"starships\" : {\"type\" : \"string\"}",
+							"    }",
+							"};",
+							"",
+							"pm.test(\"Body is correct\", function(){",
+							"    pm.expect(tv4.validate(data, schema)).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Status is 200\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status on of 200 or 201 or 202\", function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response size less 900\", function(){",
+							"    pm.response.to.have.responseSize.below(900);",
+							"});",
+							"",
+							"pm.test(\"Body contains strings\", function(){",
+							"    pm.expect(pm.response.text()).to.include(\"planets\", \"people\")",
+							"});",
+							"",
+							"pm.test(\"Header contains Content-type\", function(){",
+							"    pm.response.to.have.header(\"Content-type\", \"application/json\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://swapi.co/api/",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"co"
+					],
+					"path": [
+						"api",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
